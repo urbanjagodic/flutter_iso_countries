@@ -55,17 +55,16 @@ class CountryDataStore private constructor() {
 
   companion object{
 
-    fun getIsoCountries(localeIdentifier: String = "" ) : ArrayList<HashMap<String, String>> {
+    fun getIsoCountries(localeIdentifier: String = "en" ) : ArrayList<HashMap<String, String>> {
       var countriesList = arrayListOf<HashMap<String, String>>()
       for (countryCode in Locale.getISOCountries()) {
-        // If no locale is passed, then use "en_US"
-        val locale = Locale(localeIdentifier,countryCode)
-        var countryName: String? = locale.getDisplayCountry(Locale.forLanguageTag(localeIdentifier))
-        if (countryName == null) {
-          countryName = "UnIdentified"
-        }
-        val simpleCountry = hashMapOf("name" to countryName, "countryCode" to countryCode)
-        countriesList.add(simpleCountry)
+          val locale = Locale(localeIdentifier, countryCode)
+          var countryName: String? = locale.getDisplayCountry(Locale(localeIdentifier))
+          if (countryName == null) {
+              countryName = "UnIdentified"
+          }
+          val simpleCountry = hashMapOf("name" to countryName, "countryCode" to countryCode)
+          countriesList.add(simpleCountry)
       }
       countriesList = ArrayList(countriesList.sortedWith(compareBy { it["name"] }))
       return  countriesList
